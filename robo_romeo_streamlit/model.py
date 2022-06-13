@@ -14,8 +14,8 @@ def cnn_builder():
     cnn_model = EfficientNetB0(include_top=False, weights='imagenet',
                            input_shape= (256,256,3))
     return cnn_model
-def image_to_features(path):
-    img_array = image_to_array(path)
+def image_to_features(img_array):
+
     features = cnn_builder().predict(img_array)
     return features
 def model_builder():
@@ -57,6 +57,8 @@ def predict_caption(model,img_encoded):
 if __name__ == '__main__':
     lstm_model = model_builder()
     lstm_model.load_weights('model_run_30k_weights.h5')
-    img_encoded = image_to_features('IMG_9640.jpg')
+
+    img_array = image_to_array('51205408.jpeg')
+    img_encoded = image_to_features(img_array)
     caption = predict_caption(lstm_model, img_encoded)
     print(caption)

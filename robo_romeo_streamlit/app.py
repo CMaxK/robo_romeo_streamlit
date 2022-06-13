@@ -2,9 +2,10 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import os
-from model import build_model #links with model building .py file
+from robo_romeo_streamlit.model import model_builder, predict_caption, image_to_features #links with model building .py file
 from dotenv import load_dotenv, find_dotenv
 import openai
+from tensorflow.image import resize
 
 env_path = find_dotenv()
 load_dotenv(env_path)
@@ -25,10 +26,10 @@ if password == app_password:
     @st.cache(allow_output_mutation=True) #cache the model at first loading
     def load_model_cache():
 
-        model = build_model() #build empty model with the right architecure
+        model = model_builder() #build empty model with the right architecure
 
-        path_folder = os.path.dirname(__file__)#Get Current directory Path File
-        model.load_weights(os.path.join(path_folder,"MODEL_WEIGHTS_FILE.h5")) #load weights only from h5 file
+    #Get Current directory Path File
+        model.load_weights("model_run_30k_weights.h5") #load weights only from h5 file
 
         return model
 
@@ -41,8 +42,9 @@ if password == app_password:
 
     if uploaded_file:
         image = Image.open(uploaded_file)
-        st.image(image)
-        imgArray = np.array(image).reshape(28,28,1) /255. #convert/resize and reshape
+        imgArray = np.array(image) #convert/resize and reshape
+        imgArray = resize(imgArray,(256,256))
+        imgArray = np.expand_dims(imgArray, axis=0)
         if not imgArray.sum() >0:
             image = None
             st.write("Invalid Image")
@@ -51,7 +53,8 @@ if password == app_password:
             # Send to API
             if image is not None:
 
-                caption = model.predict(image)
+                img_encoded = image_to_features(imgArray)
+                caption = predict_caption(model, img_encoded)
                 st.image(image,caption=caption)
 
                 # GPT3 function that will return romantic poem. takes predicted caption as input

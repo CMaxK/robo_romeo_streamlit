@@ -58,7 +58,7 @@ if __name__ == '__main__':
     lstm_model = model_builder()
     lstm_model.load_weights('model_run_30k_weights.h5')
 
-    img_array = image_to_array('51205408.jpeg')
+    img_array = image_to_array('IMG_9640.jpg')
     img_encoded = image_to_features(img_array)
     caption = predict_caption(lstm_model, img_encoded)
     print(caption)

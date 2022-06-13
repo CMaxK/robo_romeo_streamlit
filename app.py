@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import os
-from model import model_builder, predict_caption, image_to_features #links with model building .py file
+from model import model_builder, predict_caption, image_to_features, image_to_array #links with model building .py file
 from dotenv import load_dotenv, find_dotenv
 import openai
 from tensorflow.image import resize
@@ -43,9 +43,11 @@ if password == app_password:
 
     if uploaded_file:
         image = Image.open(uploaded_file)
-        imgArray = np.array(image) #convert/resize and reshape
-        imgArray = resize(imgArray,(256,256))
-        imgArray = np.expand_dims(imgArray, axis=0)
+        #imgArray = np.array(image) #convert/resize and reshape
+        #imgArray = resize(imgArray,(256,256))
+        #imgArray = np.expand_dims(imgArray, axis=0)
+
+        imgArray = image_to_array(uploaded_file)
 
         predict_button = st.button('Predict')
         placeholder = st.empty()
@@ -79,9 +81,7 @@ if password == app_password:
                     return response
 
                 # instanciate gpt3 function with previously confirmed parameters
-                response = gpt3(prompt=f"write a love poem about {caption}:", engine='text-davinci-002',
-                        temperature=0.7,top_p=1, max_tokens=256,
-                        frequency_penalty=0, presence_penalty=0)
+                response = gpt3()
 
                 # prints poem
                 st.text(response)

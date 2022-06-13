@@ -8,3 +8,5 @@ raw_data/
 .env
 .vscode/
 .python-version
+*.jpg
+*.jpeg

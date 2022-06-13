@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import os
-from model_utils import build_autoencoder #links with model building .py file
+from model import build_autoencoder #links with model building .py file
 
 st.title("Robo-Romeo❤️")
 st.markdown("Upload your image - Robo-Romeo will provide you with a caption and romantic poetry")
@@ -37,7 +37,7 @@ if uploaded_file:
         # Send to API
         if image is not None:
 
-            caption = model.predict(np.expand_dims(image,axis=0))
+            caption = model.predict(image)
             st.write("Image caption:")
             st.write(caption)
 

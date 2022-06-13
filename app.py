@@ -84,6 +84,6 @@ if password == app_password:
                 response = gpt3()
 
                 # prints poem
-                st.text(response.choices[0].text.split('\n'))
+                st.text(response.choices[0].text)
 
                 #----------------

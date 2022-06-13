@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import os
-from robo_romeo_streamlit.model import model_builder, predict_caption, image_to_features #links with model building .py file
+from model import model_builder, predict_caption, image_to_features #links with model building .py file
 from dotenv import load_dotenv, find_dotenv
 import openai
 from tensorflow.image import resize

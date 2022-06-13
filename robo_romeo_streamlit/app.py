@@ -40,22 +40,30 @@ if password == app_password:
     res = None
     image=None
 
+
     if uploaded_file:
         image = Image.open(uploaded_file)
         imgArray = np.array(image) #convert/resize and reshape
         imgArray = resize(imgArray,(256,256))
         imgArray = np.expand_dims(imgArray, axis=0)
+
+        predict_button = st.button('Predict')
+        placeholder = st.empty()
+
         if not imgArray.sum() >0:
             image = None
             st.write("Invalid Image")
+        else:
+            placeholder.image(image)
 
-        if st.button('Predict'):
+        if predict_button:
             # Send to API
+
             if image is not None:
 
                 img_encoded = image_to_features(imgArray)
                 caption = predict_caption(model, img_encoded)
-                st.image(image,caption=caption)
+                placeholder.image(image,caption=caption)
 
                 # GPT3 function that will return romantic poem. takes predicted caption as input
                 def gpt3(prompt=f"write a love poem about {caption}:", engine='text-davinci-002',
@@ -71,7 +79,9 @@ if password == app_password:
                     return response
 
                 # instanciate gpt3 function with previously confirmed parameters
-                response = gpt3()
+                response = gpt3(prompt=f"write a love poem about {caption}:", engine='text-davinci-002',
+                        temperature=0.7,top_p=1, max_tokens=256,
+                        frequency_penalty=0, presence_penalty=0)
 
                 # prints poem
                 st.text(response)

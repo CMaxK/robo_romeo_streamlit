@@ -77,7 +77,3 @@ if password == app_password:
                 st.text(response)
 
                 #----------------
-
-else:
-
-    "incorrect password ❌"

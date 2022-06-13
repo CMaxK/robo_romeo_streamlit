@@ -52,7 +52,7 @@ if password == app_password:
             if image is not None:
 
                 caption = model.predict(image)
-                st.caption(caption)
+                st.image(image,caption=caption)
 
                 # GPT3 function that will return romantic poem. takes predicted caption as input
                 def gpt3(prompt=f"write a love poem about {caption}:", engine='text-davinci-002',

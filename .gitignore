@@ -7,4 +7,3 @@ raw_data/
 **/__pycache__/
 .env
 .vscode/
-*.h5

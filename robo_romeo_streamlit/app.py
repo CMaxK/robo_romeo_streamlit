@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import os
-from model import build_model #links with model building .py file
+from model import image_to_features, model_builder #links with model building .py file
 from dotenv import load_dotenv, find_dotenv
 import openai
 
@@ -25,7 +25,7 @@ if password == app_password:
     @st.cache(allow_output_mutation=True) #cache the model at first loading
     def load_model_cache():
 
-        model = build_model() #build empty model with the right architecure
+        model = model_builder() #build empty model with the right architecure
 
         path_folder = os.path.dirname(__file__)#Get Current directory Path File
         model.load_weights(os.path.join(path_folder,"MODEL_WEIGHTS_FILE.h5")) #load weights only from h5 file
@@ -40,10 +40,8 @@ if password == app_password:
     image=None
 
     if uploaded_file:
-        image = Image.open(uploaded_file)
-        st.image(image)
-        imgArray = np.array(image).reshape(28,28,1) /255. #convert/resize and reshape
-        if not imgArray.sum() >0:
+        image = image_to_features(uploaded_file) #convert to array
+        if not image.sum() >0:
             image = None
             st.write("Invalid Image")
 
@@ -74,7 +72,3 @@ if password == app_password:
                 st.text(response)
 
                 #----------------
-
-else:
-
-    "incorrect password ❌"

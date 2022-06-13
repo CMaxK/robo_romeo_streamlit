@@ -7,7 +7,6 @@ tensorflow
 
 # streamlit
 streamlit
-PIL
-model_utils
-dotenv
+Pillow
+python-dotenv
 openai

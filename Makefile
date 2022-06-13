@@ -59,4 +59,4 @@ pypi:
 #      STREAMLIT
 # ----------------------------------
 run_streamlit:
-	@streamlit run app.py
+	@streamlit run robo_romeo_streamlit/app.py

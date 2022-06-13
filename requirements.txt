@@ -32,3 +32,5 @@ termcolor
 streamlit
 PIL
 model_utils
+dotenv
+openai

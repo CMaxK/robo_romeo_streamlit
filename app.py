@@ -17,16 +17,17 @@ def get_base64_of_bin_file(bin_file):
         data = f.read()
     return base64.b64encode(data).decode()
 
-bin_str = get_base64_of_bin_file('robo-romeo.png')
-CSS = """
-.stApp {
-    background-image: url("data:image/gif;base64,%s");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-size: 1400px 600px;
-}
-""" % bin_str
-st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
+# adding a background to a website
+# bin_str = get_base64_of_bin_file('robo-romeo.png')
+# CSS = """
+# .stApp {
+#     background-image: url("data:image/gif;base64,%s");
+#     background-size: cover;
+#     background-repeat: no-repeat;
+#     background-size: 1400px 600px;
+# }
+# """ % bin_str
+# st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 env_path = find_dotenv()
 load_dotenv(env_path)
@@ -119,7 +120,7 @@ if password == app_password:
                 url = "https://api.uberduck.ai/speak"
                 payload = {
                     "voice": "c-3po",
-                    "pace": 1,
+                    "pace": 0,
                 }
                 payload["speech"] = response.choices[0].text
 
@@ -132,17 +133,20 @@ if password == app_password:
 
                 r = requests.post(url, json=payload, headers=headers)
 
-                time.sleep(5)
-
                 # second request to get the link for WAV file
                 url_2 = f"https://api.uberduck.ai/speak-status?uuid={r.json()['uuid']}"
                 headers_2 = {"Accept": "application/json"}
 
-                r_2 = requests.get(url_2 ,headers=headers_2)
+                # while loop to get a responce from API
+                while True:
+                    r_2 = requests.get(url_2 ,headers=headers_2)
+                    if r_2.json()['path'] != None:
+                        audio_file = r_2.json()['path']
+                        # display the audio
+                        st.markdown(f"Play The Audio:")
+                        st.audio(audio_file, format="audio/wav", start_time=0)
+                        break
+                    else:
+                        time.sleep(1)
 
-                audio_file = r_2.json()['path']
-
-                # display the audio
-                st.markdown(f"Play The Audio:")
-                st.audio(audio_file, format="audio/wav", start_time=0)
 st.sidebar.image("robot_2_side_bar.PNG")

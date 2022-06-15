@@ -23,13 +23,15 @@ openai.api_key = os.getenv('OPENAI_KEY')
 
 st.sidebar.title("#❤️ Robo-Romeo ❤️")
 
+
+
 # ask for password
 password = st.sidebar.text_input("Enter a password", type="password")
 if password == app_password:
 
     #st.title("Robo-Romeo❤️")
-    st.text("Upload your image - ❤️ Robo-Romeo ❤️ will provide you with a caption and romantic poetry")
-
+    #st.text("Upload your image - ❤️ Robo-Romeo ❤️ will provide you with a caption and romantic poetry")
+    col1, col2 = st.columns([2, 2])
 
     @st.cache(allow_output_mutation=True) #cache the model at first loading
     def load_model_cache():
@@ -58,7 +60,7 @@ if password == app_password:
         imgArray = image_to_array(uploaded_file)
 
         predict_button = st.sidebar.button('wherefore art thou Romeo?')
-        placeholder = st.empty()
+        placeholder = col1.empty()
 
         if not imgArray.sum() >0:
             image = None
@@ -92,7 +94,8 @@ if password == app_password:
                 response = gpt3()
 
                 # prints poem
-                st.text(response.choices[0].text)
+                #col2.subheader("A poem for you from Robo-Robot's heart")
+                col2.text(response.choices[0].text)
 
                 #Text to Speach API Request
 

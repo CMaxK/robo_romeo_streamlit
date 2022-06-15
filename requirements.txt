@@ -12,5 +12,4 @@ streamlit
 Pillow
 python-dotenv
 openai
-time
 requests

@@ -133,12 +133,10 @@ if password == app_password:
 
                 r = requests.post(f"{url}speak", json=payload, headers=headers)
 
-                # second request to get the link for WAV file
-                headers_2 = {"Accept": "application/json"}
-
                 # while loop to get a responce from text-to-voice API
                 while True:
-                    r_2 = requests.get(f"{url}speak-status?uuid={r.json()['uuid']}" ,headers=headers_2)
+                    headers_2 = {"Accept": "application/json"}
+                    r_2 = requests.get(f"{url}speak-status?uuid={r.json()['uuid']}", headers=headers_2)
                     if r_2.json()['path'] != None:
                         audio_file = r_2.json()['path']
                         # display the audio

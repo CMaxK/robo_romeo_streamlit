@@ -6,10 +6,29 @@ from model import model_builder, predict_caption, image_to_features, image_to_ar
 from dotenv import load_dotenv, find_dotenv
 import openai
 from tensorflow.image import resize
+import json
+from streamlit_lottie import st_lottie
+
 
 import time
 import requests
+import base64
+@st.cache(allow_output_mutation=True)
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
+bin_str = get_base64_of_bin_file('robo-romeo.png')
+CSS = """
+.stApp {
+    background-image: url("data:image/gif;base64,%s");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: 1400px 600px;
+}
+""" % bin_str
+st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 env_path = find_dotenv()
 load_dotenv(env_path)
@@ -21,9 +40,7 @@ text_to_speech = os.environ.get("tts_API")
 # retrieve api key for GPT3
 openai.api_key = os.getenv('OPENAI_KEY')
 
-st.sidebar.title("#❤️ Robo-Romeo ❤️")
-
-
+st.sidebar.title("#❤️ robo-romeo ❤️")
 
 # ask for password
 password = st.sidebar.text_input("Enter a password", type="password")
@@ -60,6 +77,7 @@ if password == app_password:
         imgArray = image_to_array(uploaded_file)
 
         predict_button = st.sidebar.button('wherefore art thou Romeo?')
+
         placeholder = col1.empty()
 
         if not imgArray.sum() >0:
@@ -129,3 +147,4 @@ if password == app_password:
                 # display the audio
                 st.markdown(f"Play The Audio:")
                 st.audio(audio_file, format="audio/wav", start_time=0)
+st.sidebar.image("robot_2_side_bar.PNG")

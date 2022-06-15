@@ -6,8 +6,6 @@ from model import model_builder, predict_caption, image_to_features, image_to_ar
 from dotenv import load_dotenv, find_dotenv
 import openai
 from tensorflow.image import resize
-import json
-from streamlit_lottie import st_lottie
 
 
 import time

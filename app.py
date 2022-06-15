@@ -7,21 +7,31 @@ from dotenv import load_dotenv, find_dotenv
 import openai
 from tensorflow.image import resize
 
+import time
+import requests
+
+
 env_path = find_dotenv()
 load_dotenv(env_path)
 
 # retrieve access password (opt: add a login)
 app_password = os.environ.get("APP_PASSWORD")
+# retrieve access to text to speech
+text_to_speech = os.environ.get("tts_API")
 # retrieve api key for GPT3
 openai.api_key = os.getenv('OPENAI_KEY')
 
+st.sidebar.title("#❤️ Robo-Romeo ❤️")
+
+
+
 # ask for password
-password = st.text_input("Enter a password", type="password")
+password = st.sidebar.text_input("Enter a password", type="password")
 if password == app_password:
 
-    st.title("Robo-Romeo❤️")
-    st.markdown("Upload your image - Robo-Romeo will provide you with a caption and romantic poetry")
-
+    #st.title("Robo-Romeo❤️")
+    #st.text("Upload your image - ❤️ Robo-Romeo ❤️ will provide you with a caption and romantic poetry")
+    col1, col2 = st.columns([2, 2])
 
     @st.cache(allow_output_mutation=True) #cache the model at first loading
     def load_model_cache():
@@ -36,7 +46,7 @@ if password == app_password:
     model = load_model_cache()
 
     ## Image Loader
-    uploaded_file = st.file_uploader("Upload your image here", type=["png", "jpg", "jpeg"])
+    uploaded_file = st.sidebar.file_uploader("Upload your image here", type=["png", "jpg", "jpeg"])
     res = None
     image=None
 
@@ -49,8 +59,8 @@ if password == app_password:
 
         imgArray = image_to_array(uploaded_file)
 
-        predict_button = st.button('Predict')
-        placeholder = st.empty()
+        predict_button = st.sidebar.button('wherefore art thou Romeo?')
+        placeholder = col1.empty()
 
         if not imgArray.sum() >0:
             image = None
@@ -84,6 +94,38 @@ if password == app_password:
                 response = gpt3()
 
                 # prints poem
-                st.text(response.choices[0].text)
+                #col2.subheader("A poem for you from Robo-Robot's heart")
+                col2.text(response.choices[0].text)
 
-                #----------------
+                #Text to Speach API Request
+
+                # first request to get unique 'uuid' of the inputed text
+                url = "https://api.uberduck.ai/speak"
+                payload = {
+                    "voice": "c-3po",
+                    "pace": 1,
+                }
+                payload["speech"] = response.choices[0].text
+
+                headers = {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                }
+
+                headers["Authorization"] = text_to_speech
+
+                r = requests.post(url, json=payload, headers=headers)
+
+                time.sleep(5)
+
+                # second request to get the link for WAV file
+                url_2 = f"https://api.uberduck.ai/speak-status?uuid={r.json()['uuid']}"
+                headers_2 = {"Accept": "application/json"}
+
+                r_2 = requests.get(url_2 ,headers=headers_2)
+
+                audio_file = r_2.json()['path']
+
+                # display the audio
+                st.markdown(f"Play The Audio:")
+                st.audio(audio_file, format="audio/wav", start_time=0)

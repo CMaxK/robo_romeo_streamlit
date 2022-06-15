@@ -117,7 +117,7 @@ if password == app_password:
                 #Text to Speach API Request
 
                 # first request to get unique 'uuid' of the inputed text
-                url = "https://api.uberduck.ai/speak"
+                url = "https://api.uberduck.ai/"
                 payload = {
                     "voice": "c-3po",
                     "pace": 0,
@@ -131,15 +131,14 @@ if password == app_password:
 
                 headers["Authorization"] = text_to_speech
 
-                r = requests.post(url, json=payload, headers=headers)
+                r = requests.post(f"{url}speak", json=payload, headers=headers)
 
                 # second request to get the link for WAV file
-                url_2 = f"https://api.uberduck.ai/speak-status?uuid={r.json()['uuid']}"
                 headers_2 = {"Accept": "application/json"}
 
-                # while loop to get a responce from API
+                # while loop to get a responce from text-to-voice API
                 while True:
-                    r_2 = requests.get(url_2 ,headers=headers_2)
+                    r_2 = requests.get(f"{url}speak-status?uuid={r.json()['uuid']}" ,headers=headers_2)
                     if r_2.json()['path'] != None:
                         audio_file = r_2.json()['path']
                         # display the audio

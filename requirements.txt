@@ -13,4 +13,3 @@ Pillow
 python-dotenv
 openai
 requests
-base64

@@ -39,6 +39,9 @@ text_to_speech = os.environ.get("tts_API")
 # retrieve api key for GPT3
 openai.api_key = os.getenv('OPENAI_KEY')
 
+st.set_page_config(layout="wide")
+
+
 st.sidebar.title("#❤️ robo-romeo ❤️")
 
 # ask for password
@@ -47,7 +50,8 @@ if password == app_password:
 
     #st.title("Robo-Romeo❤️")
     #st.text("Upload your image - ❤️ Robo-Romeo ❤️ will provide you with a caption and romantic poetry")
-    col1, col2 = st.columns([2, 2])
+
+    col1, col2 = st.columns([1, 1])
 
     @st.cache(allow_output_mutation=True) #cache the model at first loading
     def load_model_cache():

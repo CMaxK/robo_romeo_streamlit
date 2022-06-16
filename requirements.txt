@@ -2,9 +2,9 @@
 
 numpy
 pandas
-tensorflow-macos; sys_platform == 'darwin' and 'ARM' in platform_version
-tensorflow; sys_platform == 'darwin' and 'ARM' not in platform_version
-tensorflow; sys_platform != 'darwin'
+tensorflow-macos==2.8.0; sys_platform == 'darwin' and 'ARM' in platform_version
+tensorflow==2.8.0; sys_platform == 'darwin' and 'ARM' not in platform_version
+tensorflow==2.8.0; sys_platform != 'darwin'
 
 
 # streamlit

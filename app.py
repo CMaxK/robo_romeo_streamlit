@@ -144,6 +144,6 @@ if password == app_password:
                         st.audio(audio_file, format="audio/wav", start_time=0)
                         break
                     else:
-                        time.sleep(1)
+                        time.sleep(2)
 
 st.sidebar.image("robot_2_side_bar.PNG")

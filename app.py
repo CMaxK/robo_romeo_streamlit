@@ -73,11 +73,11 @@ if password == app_password:
 
     if uploaded_file:
         image = Image.open(uploaded_file)
-        #imgArray = np.array(image) #convert/resize and reshape
-        #imgArray = resize(imgArray,(256,256))
-        #imgArray = np.expand_dims(imgArray, axis=0)
+        imgArray = np.array(image) #convert/resize and reshape
+        imgArray = resize(imgArray,(256,256))
+        imgArray = np.expand_dims(imgArray, axis=0)
 
-        imgArray = image_to_array(uploaded_file)
+        #imgArray = image_to_array(uploaded_file)
 
         predict_button = st.sidebar.button('wherefore art thou Romeo?')
 

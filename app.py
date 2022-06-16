@@ -115,7 +115,7 @@ if password == app_password:
                 col2.text(response.choices[0].text)
 
                 #Text to Speach API Request
-
+                time.sleep(5)
                 # first request to get unique 'uuid' of the inputed text
                 url = "https://api.uberduck.ai/"
                 payload = {
